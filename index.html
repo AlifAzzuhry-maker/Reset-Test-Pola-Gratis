@@ -32,11 +32,12 @@ h1{font-size:28px}h2{font-size:22px}h3{font-size:17px}
 .quote{font-style:italic;color:var(--mu)}
 .lbl{font-family:system-ui,sans-serif;font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--mu);margin:14px 0 2px}
 .exp{background:var(--ac2);border-radius:12px;padding:14px;margin-top:14px}
-.hide{display:none}
+.hide{display:none}.inp{width:100%;padding:12px 14px;margin:6px 0;border:1px solid var(--bd);border-radius:12px;background:var(--bg);color:var(--tx);font:16px system-ui,sans-serif}.chk{display:flex;gap:8px;align-items:flex-start;margin:8px 0}.chk input{margin-top:5px}
 </style>
 </head>
 <body>
 <main id="app"></main>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <script>
 const Q=["Saat diremehkan atau dibandingkan dengan orang lain, aku ingin segera menunjukkan bahwa aku mampu.","Aku mengiyakan permintaan orang lain padahal sebenarnya ingin menolak.","Ketika rencana berubah mendadak, aku merasa tegang dan ingin segera mengatur ulang semuanya.","Saat ada tugas atau percakapan yang tidak nyaman, aku mengalihkan diri ke HP, kesibukan lain, atau menunda.","Setelah melakukan kesalahan, aku mengulang-ulang kesalahan itu di kepala dan menyalahkan diri sendiri.","Saat ada masalah di sekitarku, aku otomatis mengambil beban itu, meski sebenarnya bisa dibagi.","Nilai diriku terasa naik-turun mengikuti pencapaian atau pengakuan yang kudapat.","Aku menahan pendapat atau perasaanku demi menjaga suasana tetap nyaman.","Aku sulit melepaskan sesuatu kalau belum sesuai standar atau cara yang kubayangkan.","Aku berharap sebagian masalah hilang sendiri kalau aku tidak menyentuhnya dulu.","Aku sulit menerima pujian karena merasa hasilku masih kurang.","Aku merasa bersalah ketika beristirahat saat orang lain masih membutuhkanku.","Aku bekerja atau berusaha lebih keras dari yang dibutuhkan supaya dipandang berhasil.","Aku cemas kalau ada orang kecewa atau tidak suka padaku, dan itu memengaruhi keputusanku.","Aku sering membayangkan skenario terburuk, lalu menyiapkan banyak cara supaya itu tidak terjadi.","Aku menghindari membuka sesuatu (pesan, tagihan, percakapan) karena sudah membayangkan rasa tidak enaknya.","Aku merasa seharusnya aku sudah lebih jauh dari posisiku sekarang.","Aku sulit meminta bantuan karena merasa harus bisa menyelesaikannya sendiri.","Saat melihat orang lain lebih maju, aku merasa tertinggal dan terdorong mengejar, bukan sekadar terinspirasi.","Aku lebih mudah memikirkan kebutuhan orang lain daripada kebutuhanku sendiri.","Aku tidak tenang kalau tidak memegang kendali atas hasil pekerjaan atau orang di sekitarku.","Aku lebih mudah berpindah-pindah aktivitas daripada duduk diam bersama perasaan yang tidak nyaman.","Suara di kepalaku lebih sering menilai dan mengoreksiku daripada mendukungku.","Aku terbiasa menjadi “yang kuat”, sehingga jarang membiarkan orang lain melihat aku lelah atau kewalahan.","Aku sering menyadari pemicu (ucapan, situasi, perasaan) sesaat setelah pemicu itu muncul.","Aku bisa berhenti sejenak dan merasakan napas sebelum merespons situasi yang memicu.","Aku bisa melihat perasaan atau pikiranku tanpa langsung terbawa olehnya.","Aku mulai bisa membedakan “apa yang terjadi” dari “cerita yang kubuat tentangnya”."];
 const L=["Hampir tidak pernah","Jarang","Kadang-kadang","Sering","Hampir selalu"];
@@ -56,35 +57,79 @@ const WA="6287758119913";
 const A=Array(28).fill(0);let i=-1;
 const $=document.getElementById("app");
 const lvl=s=>s>=15?"sering":s>=10?"kadang":"jarang";
-function start(){i=-1;A.fill(0);$.innerHTML=`<span class="tag">Reset Test · Edisi Pola</span><h1>Pola Apa yang Sedang Mengambil Alih?</h1><p class="mu">Tes reflektif untuk mengenali pola respons otomatismu — dan seberapa luas ruang jeda yang sudah kamu punya.</p><p class="quote">“Jangan percaya hasilnya begitu saja. Amati dirimu sendiri.”</p><div class="card"><h3>Bukan diagnosis. Ini alat refleksi.</h3><p class="small">Tes ini bukan diagnosis psikologis, bukan label kepribadian, dan bukan ukuran nilai dirimu. Setiap orang punya semua pola ini sampai taraf tertentu. Jawablah berdasarkan apa yang paling sering benar-benar terjadi akhir-akhir ini — bukan versi dirimu yang kamu inginkan.</p><p class="small mu">28 pernyataan · 6 pola · ± 10 menit</p></div><button class="btn" onclick="next()">Mulai Tes</button>`}
+function start(){i=-1;A.fill(0);$.innerHTML=`<span class="tag">Reset Test · Edisi Pola</span><h1>Pola Apa yang Sedang Mengambil Alih?</h1><p class="mu">Tes reflektif untuk mengenali pola respons otomatismu — dan seberapa luas ruang jeda yang sudah kamu punya.</p><p class="quote">“Jangan percaya hasilnya begitu saja. Amati dirimu sendiri.”</p><div class="card"><h3>Bukan diagnosis. Ini alat refleksi.</h3><p class="small">Tes ini bukan diagnosis psikologis, bukan label kepribadian, dan bukan ukuran nilai dirimu. Setiap orang punya semua pola ini sampai taraf tertentu. Jawablah berdasarkan apa yang paling sering benar-benar terjadi akhir-akhir ini — bukan versi dirimu yang kamu inginkan.</p><p class="small mu">28 pernyataan · 6 pola · ± 10 menit</p></div><div class="card"><span class="tag">100% gratis</span><h3>Isi dulu, lalu mulai</h3><p class="small"><b>Gratis, tanpa biaya dan tanpa pembayaran apa pun.</b> Hasil lengkap dan PDF-nya langsung kamu dapat setelah tes selesai. Nama dan nomor WhatsApp hanya untuk mengirim materi dan memungkinkan Admin menyapa bila kamu setuju.</p>
+<input id="nm" class="inp" placeholder="Nama panggilan" autocomplete="given-name"><input id="kt" class="inp" type="tel" inputmode="tel" placeholder="Nomor WhatsApp" autocomplete="tel">
+<label class="small chk"><input type="checkbox" id="ok"> <span>Aku setuju dihubungi Admin Suara Kesadaran terkait tes ini.</span></label>
+<p id="er" class="small" style="color:#b3412f;margin:6px 0 0"></p></div><button class="btn" onclick="begin()">Mulai tes gratis</button>`}
 function next(){i++;i<28?ask():result()}
 function ask(){const sec=i<24?"Bagian A · Pola Respons Otomatis":"Bagian B · Ruang Jeda";
 $.innerHTML=`<div class="row mu"><span>${sec}</span><span>${i+1} / 28</span></div><div class="bar"><i style="width:${i/28*100}%"></i></div><div class="card"><p class="q">${Q[i]}</p><div class="opts">${L.map((l,k)=>`<button class="opt ${A[i]==k+1?'on':''}" onclick="pick(${k+1})"><b>${k+1}</b>${l}</button>`).join("")}</div></div>${i>0?'<button class="btn alt" onclick="back()">← Kembali</button>':''}`}
 function pick(v){A[i]=v;setTimeout(next,200)}
 function back(){i--;ask()}
+/* ====== ISI DI SINI ====== */
+const CFG={
+ FORM_URL:"",   // contoh: https://docs.google.com/forms/d/e/XXXX/formResponse
+ NAMA_ENTRY:"", // contoh: entry.123456789
+ WA_ENTRY:""    // contoh: entry.987654321
+};
+/* ========================== */
+let SC=null,NAMA="";
+const esc=t=>t.replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const detail=(x,role)=>{const p=P[x.k];return `<div class="card"><span class="tag">${role} · ${x.s}/20</span><h2>${p.n}</h2><p class="quote">“${p.q}”</p>
+<div class="lbl">Pemicu</div>${p.p}<div class="lbl">Respons otomatis</div>${p.r}<div class="lbl">Cerita identitas</div>“${p.c}”<div class="lbl">Sisi baiknya</div>${p.b}<div class="lbl">Harga yang sering menyertai</div>${p.h}
+<div class="exp"><b class="sans">Eksperimen 30 detik</b><br>${p.e}</div><p><b class="sans">Untuk direnungkan</b><br>${p.d}</p>${p.w?`<p class="small mu">${p.w}</p>`:""}</div>`};
+function begin(){
+const n=document.getElementById("nm").value.trim(),k=document.getElementById("kt").value.trim(),er=document.getElementById("er");
+if(!n){er.textContent="Tulis nama panggilanmu dulu.";return}
+if(k.replace(/\D/g,"").length<9){er.textContent="Isi nomor WhatsApp yang valid.";return}
+if(!document.getElementById("ok").checked){er.textContent="Centang persetujuan dulu ya.";return}
+NAMA=n;
+if(CFG.FORM_URL){try{const f=new FormData();f.append(CFG.NAMA_ENTRY,n);f.append(CFG.WA_ENTRY,k);fetch(CFG.FORM_URL,{method:"POST",mode:"no-cors",body:f}).catch(()=>{})}catch(e){}}
+next()}
 function result(){
-const S=P.map((p,k)=>({k,s:[0,6,12,18].reduce((a,o)=>a+A[o+k],0)})); // soal k+1, k+7, k+13, k+19
+const S=P.map((p,k)=>({k,s:[0,6,12,18].reduce((a,o)=>a+A[o+k],0)}));
 const jeda=A[24]+A[25]+A[26]+A[27];
 const sorted=[...S].sort((a,b)=>b.s-a.s);
 const flat=sorted[0].s<=9;
 const ji=jeda<=9?0:jeda<=15?1:2;
+SC={S,jeda,sorted,flat,ji};
 const rec=ji==0?["RESET"]:ji==1?["RESET","SHIFT"]:["SHIFT","INNER"];
-const msg=encodeURIComponent(flat?`Halo Admin, hasil Reset Test-ku: belum ada pola yang menonjol. Ruang Jeda ${jeda}/20.`:`Halo Admin, hasil Reset Test-ku: Pola Utama ${P[sorted[0].k].n} (${sorted[0].s}/20), Pola Pendamping ${P[sorted[1].k].n} (${sorted[1].s}/20), Ruang Jeda ${jeda}/20.`);
-const detail=(x,role)=>{const p=P[x.k];return `<div class="card"><span class="tag">${role} · ${x.s}/20</span><h2>${p.n}</h2><p class="quote">“${p.q}”</p>
-<div class="lbl">Pemicu</div>${p.p}<div class="lbl">Respons otomatis</div>${p.r}<div class="lbl">Cerita identitas</div>“${p.c}”<div class="lbl">Sisi baiknya</div>${p.b}<div class="lbl">Harga yang sering menyertai</div>${p.h}
-<div class="exp"><b class="sans">Eksperimen 30 detik</b><br>${p.e}</div><p><b class="sans">Untuk direnungkan</b><br>${p.d}</p>${p.w?`<p class="small mu">${p.w}</p>`:""}</div>`};
-$.innerHTML=`<span class="tag">Hasilmu</span><h1>${flat?"Belum ada pola yang menonjol":"Pola Utamamu: "+P[sorted[0].k].n}</h1>
+$.innerHTML=`<span class="tag">Hasilmu · ${esc(NAMA)}</span><h1>${flat?"Belum ada pola yang menonjol":"Pola Utamamu: "+P[sorted[0].k].n}</h1>
 <p class="mu small">Ini alat refleksi, bukan diagnosis. Skor tinggi bukan berarti kamu lebih buruk, dan skor rendah bukan berarti kamu sudah selesai.</p>
+<div class="card"><span class="tag">Gratis</span><h3>Simpan hasilmu sebagai PDF</h3><button class="btn" onclick="dlpdf()">Unduh PDF hasilku</button></div>
 <div class="card"><h3>Skor enam pola</h3>${S.map(o=>`<div class="row"><span>${P[o.k].n}</span><span>${o.s}/20 · ${lvl(o.s)}</span></div><div class="bar" style="margin:4px 0 8px"><i style="width:${o.s/20*100}%"></i></div>`).join("")}</div>
-${flat?`<div class="card"><p>Semua barismu ≤ 9, artinya belum ada pola yang menonjol. Baca saja pola yang paling menarik perhatianmu:</p><div class="opts">${P.map((p,k)=>`<button class="opt" onclick="show(${k})">${p.n}</button>`).join("")}</div><div id="one"></div></div>`:detail(sorted[0],"Pola Utama")+detail(sorted[1],"Pola Pendamping")}
 <div class="card"><span class="tag">Ruang Jeda · ${jeda}/20</span><h2>${J[ji].t}</h2><p>${J[ji].x}</p><p class="small mu">Di Ruang Jeda, angka tinggi = ruang makin luas (berlawanan dengan Pola). Ruang jeda yang tipis bukan kegagalan; ia hanya memberi tahu di mana latihan paling berguna untukmu.</p></div>
-<h2 style="margin-top:28px">Langkah berikutnya</h2><p class="mu small">Tidak ada jalur yang lebih benar. Ini hanya panduan berdasarkan Ruang Jeda-mu.</p>
-${rec.map((k,n)=>cta(k,n==0)).join("")}${cta("PRIVAT",false)}
-<div class="card"><p class="small">Masih ragu mulai dari mana? Kirim hasilmu ke Admin, dan Admin akan membantu menjelaskan langkah berikutnya.</p><a class="btn wa" href="https://wa.me/${WA}?text=${msg}" target="_blank" rel="noopener">Kirim hasil via WhatsApp</a><p class="small mu" style="margin-bottom:0">Admin 1 · 0877-5811-9913 &nbsp;|&nbsp; Admin 2 · 0831-3471-5814</p></div>
-<button class="btn alt" onclick="start()">Ulangi tes</button>
+${flat?`<div class="card"><p>Semua barismu ≤ 9, artinya belum ada pola yang menonjol. Baca saja pola yang paling menarik perhatianmu:</p><div class="opts">${P.map((p,k)=>`<button class="opt" onclick="show(${k})">${p.n}</button>`).join("")}</div><div id="one"></div></div>`:detail(sorted[0],"Pola Utama")+detail(sorted[1],"Pola Pendamping")}
+<h2 style="margin-top:28px">Langkah berikutnya</h2><p class="mu small">Tidak ada jalur yang lebih benar. Ini hanya panduan berdasarkan Ruang Jeda-mu.</p>${rec.map((x,j)=>cta(x,j==0)).join("")}${cta("PRIVAT",false)}
+<div class="card"><p class="small">Masih ragu mulai dari mana? Kirim hasilmu ke Admin, dan Admin akan membantu menjelaskan langkah berikutnya.</p><a class="btn wa" href="https://wa.me/${WA}?text=${enc()}" target="_blank" rel="noopener">Kirim hasil via WhatsApp</a><p class="small mu" style="margin-bottom:0">Admin 1 · 0877-5811-9913 &nbsp;|&nbsp; Admin 2 · 0831-3471-5814</p></div>
 <p class="small mu">Catatan: tes ini bersifat reflektif dan edukatif, bukan diagnosis atau pengganti bantuan profesional. Jika refleksi tentang emosi atau pengalaman pribadi terasa sangat berat, pertimbangkan mencari bantuan dari tenaga profesional yang sesuai.</p>
+<button class="btn alt" onclick="start()">Ulangi tes</button>
 <p class="quote small">“Jangan percaya aku. Amati dirimu sendiri.” — Alif Azzuhry · Praktisi Kesadaran</p>`;
 window.scrollTo(0,0)}
+function enc(){const{S,jeda,sorted,flat}=SC;return encodeURIComponent((NAMA?"Halo Admin, aku "+NAMA+". ":"Halo Admin, ")+(flat?`hasil Reset Test-ku: belum ada pola yang menonjol. Ruang Jeda ${jeda}/20.`:`hasil Reset Test-ku: Pola Utama ${P[sorted[0].k].n} (${sorted[0].s}/20), Pola Pendamping ${P[sorted[1].k].n} (${sorted[1].s}/20), Ruang Jeda ${jeda}/20.`))}
+async function dlpdf(){
+const d=new window.jspdf.jsPDF({unit:"mm",format:"a4"});let y=20;
+const T=(t,sz,b,gap)=>{d.setFont("helvetica",b?"bold":"normal");d.setFontSize(sz);d.splitTextToSize(t,170).forEach(l=>{if(y>280){d.addPage();y=20}d.text(l,20,y);y+=sz*0.5});y+=gap==null?2:gap};
+const{S,jeda,sorted,flat,ji}=SC;
+T("RESET TEST · EDISI POLA · SUARA KESADARAN ID",9,1,4);
+T("Hasil Reset Test"+(NAMA?" — "+NAMA:""),20,1,2);
+T(new Date().toLocaleDateString("id-ID",{day:"numeric",month:"long",year:"numeric"}),10,0,6);
+T("Tes ini adalah alat refleksi, bukan diagnosis psikologis.",10,0,6);
+T("Skor enam pola (4–20)",13,1,2);
+S.forEach(o=>T(P[o.k].n+": "+o.s+"/20 ("+lvl(o.s)+")",11,0,1));
+y+=4;T("Ruang Jeda: "+jeda+"/20 — "+J[ji].t,13,1,2);T(J[ji].x,11,0,6);
+if(flat)T("Semua skor pola 9 atau kurang: belum ada pola yang menonjol. Baca pola yang paling menarik perhatianmu di halaman hasil.",11,0,6);
+else[[sorted[0],"POLA UTAMA"],[sorted[1],"POLA PENDAMPING"]].forEach(([x,r])=>{const p=P[x.k];
+T(r+" · "+x.s+"/20",9,1,1);T(p.n,16,1,1);T("“"+p.q+"”",11,0,3);
+[["Pemicu",p.p],["Respons otomatis",p.r],["Cerita identitas","“"+p.c+"”"],["Sisi baiknya",p.b],["Harga yang sering menyertai",p.h],["Eksperimen 30 detik",p.e],["Untuk direnungkan",p.d]].forEach(([a,b])=>{T(a,10,1,0);T(b,11,0,3)});
+if(p.w)T(p.w,10,0,3);y+=4});
+const rec=ji==0?["RESET"]:ji==1?["RESET","SHIFT"]:["SHIFT","INNER"];
+T("Langkah berikutnya (pilihan, bukan keharusan)",13,1,2);
+rec.concat("PRIVAT").forEach(k=>T(PR[k][0]+" — kirim kata kunci "+k,11,0,1));
+y+=3;T("Admin 1 · 0877-5811-9913   Admin 2 · 0831-3471-5814",10,0,6);
+T("Catatan: tes ini reflektif dan edukatif, bukan diagnosis atau pengganti bantuan profesional. Jika refleksi tentang emosi atau pengalaman pribadi terasa sangat berat, pertimbangkan mencari bantuan dari tenaga profesional yang sesuai.",9,0,4);
+T("“Jangan percaya aku. Amati dirimu sendiri.” — Alif Azzuhry · Praktisi Kesadaran",10,0,0);
+d.save("Hasil-Reset-Test.pdf")}
 function cta(k,main){const t=encodeURIComponent("Halo Admin, aku ingin tanya tentang "+PR[k][0]+". Kata kunci: "+k);
 return `<div class="card"><span class="tag">${main?"Paling cocok untukmu":k=="PRIVAT"?"Ingin dipandu personal":"Alternatif"}</span><h3>${PR[k][0]}</h3><p class="small">${PR[k][1]}</p><a class="btn ${main?'wa':'alt'}" href="https://wa.me/${WA}?text=${t}" target="_blank" rel="noopener">Kirim kata kunci: ${k}</a></div>`}
 function show(k){const p=P[k];document.getElementById("one").innerHTML=`<h3 style="margin-top:16px">${p.n}</h3><p class="quote">“${p.q}”</p><p><b>Pemicu:</b> ${p.p}</p><p><b>Respons otomatis:</b> ${p.r}</p><div class="exp"><b class="sans">Eksperimen 30 detik</b><br>${p.e}</div><p><b>Untuk direnungkan:</b> ${p.d}</p>`}
