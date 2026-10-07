@@ -72,6 +72,8 @@ const CFG={
  NAMA_ENTRY:"entry.794125962", // contoh: entry.123456789
  WA_ENTRY:"entry.804756724"    // contoh: entry.987654321
 };
+const MAIN="https://alifazzuhry-maker.github.io/Suara-Kesadaran-Indonesia/";
+const LINK={RESET:"https://alifazzuhry-maker.github.io/Reset-Pola-7-Hari/"};
 /* ========================== */
 let SC=null,NAMA="";
 const esc=t=>t.replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
@@ -103,6 +105,7 @@ ${flat?`<div class="card"><p>Semua barismu ≤ 9, artinya belum ada pola yang me
 <h2 style="margin-top:28px">Langkah berikutnya</h2><p class="mu small">Tidak ada jalur yang lebih benar. Ini hanya panduan berdasarkan Ruang Jeda-mu.</p>${rec.map((x,j)=>cta(x,j==0)).join("")}${cta("PRIVAT",false)}
 <div class="card"><p class="small">Masih ragu mulai dari mana? Kirim hasilmu ke Admin, dan Admin akan membantu menjelaskan langkah berikutnya.</p><a class="btn wa" href="https://wa.me/${WA}?text=${enc()}" target="_blank" rel="noopener">Kirim hasil via WhatsApp</a><p class="small mu" style="margin-bottom:0">Admin 1 · 0877-5811-9913 &nbsp;|&nbsp; Admin 2 · 0831-3471-5814</p></div>
 <p class="small mu">Catatan: tes ini bersifat reflektif dan edukatif, bukan diagnosis atau pengganti bantuan profesional. Jika refleksi tentang emosi atau pengalaman pribadi terasa sangat berat, pertimbangkan mencari bantuan dari tenaga profesional yang sesuai.</p>
+<p class="small" style="text-align:center"><a href="${MAIN}" target="_blank" rel="noopener" style="color:var(--ac)">Kunjungi Suara Kesadaran ID</a></p>
 <button class="btn alt" onclick="start()">Ulangi tes</button>
 <p class="quote small">“Jangan percaya aku. Amati dirimu sendiri.” — Alif Azzuhry · Praktisi Kesadaran</p>`;
 window.scrollTo(0,0)}
@@ -125,13 +128,13 @@ T(r+" · "+x.s+"/20",9,1,1);T(p.n,16,1,1);T("“"+p.q+"”",11,0,3);
 if(p.w)T(p.w,10,0,3);y+=4});
 const rec=ji==0?["RESET"]:ji==1?["RESET","SHIFT"]:["SHIFT","INNER"];
 T("Langkah berikutnya (pilihan, bukan keharusan)",13,1,2);
-rec.concat("PRIVAT").forEach(k=>T(PR[k][0]+" — kirim kata kunci "+k,11,0,1));
-y+=3;T("Admin 1 · 0877-5811-9913   Admin 2 · 0831-3471-5814",10,0,6);
+rec.concat("PRIVAT").forEach(k=>T(PR[k][0]+(LINK[k]?" — "+LINK[k]:" — kirim kata kunci "+k+" ke Admin"),11,0,1));
+y+=3;T("Suara Kesadaran ID — "+MAIN,10,0,2);T("Admin 1 · 0877-5811-9913   Admin 2 · 0831-3471-5814",10,0,6);
 T("Catatan: tes ini reflektif dan edukatif, bukan diagnosis atau pengganti bantuan profesional. Jika refleksi tentang emosi atau pengalaman pribadi terasa sangat berat, pertimbangkan mencari bantuan dari tenaga profesional yang sesuai.",9,0,4);
 T("“Jangan percaya aku. Amati dirimu sendiri.” — Alif Azzuhry · Praktisi Kesadaran",10,0,0);
 d.save("Hasil-Reset-Test.pdf")}
 function cta(k,main){const t=encodeURIComponent("Halo Admin, aku ingin tanya tentang "+PR[k][0]+". Kata kunci: "+k);
-return `<div class="card"><span class="tag">${main?"Paling cocok untukmu":k=="PRIVAT"?"Ingin dipandu personal":"Alternatif"}</span><h3>${PR[k][0]}</h3><p class="small">${PR[k][1]}</p><a class="btn ${main?'wa':'alt'}" href="https://wa.me/${WA}?text=${t}" target="_blank" rel="noopener">Kirim kata kunci: ${k}</a></div>`}
+return `<div class="card"><span class="tag">${main?"Paling cocok untukmu":k=="PRIVAT"?"Ingin dipandu personal":"Alternatif"}</span><h3>${PR[k][0]}</h3><p class="small">${PR[k][1]}</p><a class="btn ${main?'wa':'alt'}" href="${LINK[k]||`https://wa.me/${WA}?text=${t}`}" target="_blank" rel="noopener">${LINK[k]?"Lihat Reset Pola 7 Hari":"Kirim kata kunci: "+k}</a>${LINK[k]?`<p class="small mu" style="margin:4px 0 0">Ingin tanya dulu? <a href="https://wa.me/${WA}?text=${t}" target="_blank" rel="noopener" style="color:var(--ac)">Chat Admin via WhatsApp</a></p>`:""}</div>`}
 function show(k){const p=P[k];document.getElementById("one").innerHTML=`<h3 style="margin-top:16px">${p.n}</h3><p class="quote">“${p.q}”</p><p><b>Pemicu:</b> ${p.p}</p><p><b>Respons otomatis:</b> ${p.r}</p><div class="exp"><b class="sans">Eksperimen 30 detik</b><br>${p.e}</div><p><b>Untuk direnungkan:</b> ${p.d}</p>`}
 start();
 </script>
